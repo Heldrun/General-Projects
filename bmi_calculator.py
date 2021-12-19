@@ -1,3 +1,6 @@
+#Simple app which takes the user's height and weight and returns their BMI.
+#If requested, will generate a target weight for achieving a healthy BMI.
+
 from tkinter import *
 
 def calc_bmi():
@@ -11,12 +14,13 @@ def calc_bmi():
     return bmi
         
 def config_outpul_label():
+    #generates a label showing user's BMI and information about a healthy BMI.
     bmi = calc_bmi()
     output_label.configure(text=f'Your BMI is {bmi}')
     advice_label.configure(text = '''A healthy range
 is between
 18 and 25''')
-    more_advice_button = Button(text = 'Adv.', font=('Verdana', 16), command = weight_change)
+    more_advice_button = Button(text = 'Advice', font=('Verdana', 16), command = weight_change)
     more_advice_button.grid(row = 4, column = 3)
     
 def unit_change():
@@ -29,6 +33,7 @@ def unit_change():
         height_label.configure(text='Enter your height in inches')
         
 def weight_change():
+    #shows the user their target weight in they want a healthy BMI
     weight = int(weight_entry.get())
     height = int(height_entry.get())
     bmi = int(calc_bmi())
@@ -44,7 +49,7 @@ def weight_change():
                 if int((i/height/height) * 10000) >= 18:
                     target_weight = i
                     break
-        advice_label.configure(text = f'Your target goal is {target_weight} KG')
+        advice_label.configure(text = f'For a healthy BMI, your\n target weight should be \n{target_weight} KG')
     else:
         if bmi >25:
             for i in range(weight, 0, -1):
@@ -56,11 +61,13 @@ def weight_change():
                 if (703*i)//(height*height) >= 18:
                     target_weight = i
                     break
-        advice_label.configure(text = f'Your target weight is {target_weight} lbs')
-                
+        advice_label.configure(text = f'For a healthy BMI, your\n target weight should be \n{target_weight} lbs')
+
+#sets up GUI
 root = Tk()
-root.geometry('500x300')
+root.geometry('800x500')
 root.title('BMI Calculator')
+
 #creates and sets an integer variable class, defaulted to the metric option
 units = IntVar()
 units.set(1)
@@ -72,12 +79,9 @@ imperial_units = Radiobutton(text = 'Imperial', var = units, value = 2, command 
 
 weight_entry = Entry(font=('Verdana', 16), width=4)
 height_entry = Entry(font=('Verdana', 16), width=4)
-calc_button = Button(text='Ok', font=('Verdana', 16), command=config_outpul_label)
+calc_button = Button(text='Calculate BMI', font=('Verdana', 16), command=config_outpul_label)
 output_label = Label(font=('Verdana', 16))
 advice_label = Label(font=('Verdana', 16))
-
-
-
 metric_units.grid(row = 0, column = 0)
 imperial_units.grid(row = 0, column = 1)
 weight_label.grid(row=1, column=0, columnspan=2)
@@ -89,4 +93,3 @@ output_label.grid(row=3, column=0)
 advice_label.grid(row = 4, column = 0)
 
 mainloop()
-     
